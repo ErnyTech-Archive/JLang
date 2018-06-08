@@ -223,7 +223,7 @@ JLang.setLang("it"); // Now JLang use it.xml file
 JLang.get("app") //JLang return value of app string of it.xml file
 ```
 
-**Initialization of JLang with Jar directory and obtaining a string from the language detected automatically*
+**Initialization of JLang with Jar directory and obtaining a string from the language detected automatically**
 ``` Java
 // Main.class is a your class for request resources, main/strings/langs is a relative path in Jar
 JLang.start(Main.class, "main/strings/langs"); 
