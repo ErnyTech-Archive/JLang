@@ -8,6 +8,7 @@ JLang once started by giving as parameter the external directory (Path or URI) t
 **Attention, this library only supports Java 10**
 
 Languages supported for auto detection:
+``` Raw
 aa	Afar
 ab	Abkhazian
 af	Afrikaans
@@ -192,7 +193,8 @@ yi	Yiddish
 yo	Yoruba
 za	Zhuang; Chuang
 zu	Zulu
-  
+```
+
 ## Examples
 
 **Basic JLang File**
@@ -204,6 +206,7 @@ zu	Zulu
     <string name="app">JLang Demo App</string>
     <string name="hello">Hello guys</string>
 </resources>
+```
 
 **Initialization of JLang and obtaining a string from the language detected automatically**
 ``` Java
