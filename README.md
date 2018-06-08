@@ -2,7 +2,9 @@
 JLang, an advanced Java (freedom) library for simplify the management of languages dynamically
 
 JLang was created to solve a lack of the Java world, the lack of a standard to manage multilingual programs.
+
 In order to make the use of JLang as easy as possible, we have chosen to use as file language for XML files similar to those used on Android.
+
 JLang once started by giving as parameter the external directory (Path or URI) that contains the language files or a directory inside the Jar (String with relative path), read all the xml files (which must be named with the language code in ISO 639-1 if you want auto detection) and will try to automatically detect the system language otherwise it will automatically set to English (en.xml).
 
 **Attention, this library only supports Java 10**
