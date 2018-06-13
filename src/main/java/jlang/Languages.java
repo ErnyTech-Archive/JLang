@@ -6,28 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Languages {
-    private static Language language;
-    private static List<Language> languages = new ArrayList<>();
+    private Language defaultLanguage;
+    private List<Language> languages = new ArrayList<>();
 
-    public static void set(String lang_code) throws LanguageMissingException {
-        for (Language language : Languages.languages) {
+    public void set(String lang_code) throws LanguageMissingException {
+        for (Language language : this.languages) {
             if (language.getLangCode().equals(lang_code)) {
-                Languages.language = language;
+                this.defaultLanguage = language;
                 return;
             }
         }
-        throw new LanguageMissingException("Language: " + lang_code + " is missing");
+        throw new LanguageMissingException(lang_code);
     }
 
-    static Language getLanguage() {
-        return Languages.language;
+    Language getLanguage() {
+        return this.defaultLanguage;
     }
 
-    public static void addLanguage(Language language) {
-        Languages.languages.add(language);
+    Language getLanguage(String lang_code) throws LanguageMissingException {
+        for (Language language : this.languages) {
+            if (language.getLangCode().equals(lang_code)) {
+                return language;
+            }
+        }
+        throw new LanguageMissingException(lang_code);
     }
 
-    public static List<Language> getLanguages() {
-        return Languages.languages;
+    public void addLanguage(Language language) {
+        this.languages.add(language);
+    }
+
+    public List<Language> getLanguages() {
+        return this.languages;
     }
 }

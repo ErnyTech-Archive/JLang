@@ -10,9 +10,11 @@ import java.nio.file.Path;
 
 public class LangParserAll {
     private Path langsPath;
+    private Languages languages;
 
-    public LangParserAll(Path langsPath) {
+    public LangParserAll(Path langsPath, Languages languages) {
         this.langsPath = langsPath;
+        this.languages = languages;
     }
 
     public void parse() {
@@ -22,7 +24,7 @@ public class LangParserAll {
             var langParser = new LangParser(path);
             var langCode = path.getFileName().toString().replace(".xml", "");
             try {
-                Languages.addLanguage(new Language(langCode, path, langParser.getJLangStrings()));
+                this.languages.addLanguage(new Language(langCode, path, langParser.getJLangStrings()));
             } catch (ParserConfigurationException | IOException | SAXException ignored) {
             }
         }

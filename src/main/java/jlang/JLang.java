@@ -1,6 +1,6 @@
 package jlang;
 
-import jlang.init.Init;
+import jlang.util.exception.InitException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,28 +8,66 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 public class JLang {
+    private static Init init = new Init();
+    private static Languages languages = new Languages();
+    private static String defaultLang_code;
+
+    public static void start(URI langsURI, String defaultLang_code) {
+        JLang.defaultLang_code = defaultLang_code;
+        JLang.init.start(langsURI, JLang.languages, defaultLang_code);
+
+    }
+
     public static void start(URI langsURI) {
-        Init.start(langsURI);
+        start(langsURI, "en");
+    }
+
+    public static void start(Path langsPath, String defaultLang_code) {
+        JLang.defaultLang_code = defaultLang_code;
+        JLang.init.start(langsPath, JLang.languages, defaultLang_code);
     }
 
     public static void start(Path langsPath) {
-        Init.start(langsPath);
+        start(langsPath, "en");
     }
 
-    public static void start(Class jarClass, String jarPath) throws URISyntaxException, IOException {
-        Init.start(jarClass, jarPath);
+    public static void start(String jarPath, String defaultLang_code) {
+        try {
+            JLang.defaultLang_code = defaultLang_code;var callerClass = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName());
+            JLang.init.start(callerClass, jarPath, JLang.languages, defaultLang_code);
+        } catch (ClassNotFoundException | IOException | URISyntaxException e) {
+            throw new InitException();
+        }
+    }
+
+    public static void start(String jarPath) {
+        start(jarPath, "en");
     }
 
     public static void setLang(String lang_code) {
-        Languages.set(lang_code);
+        JLang.languages.set(lang_code);
     }
 
     public static void setLang() {
-        setLang("en");
+        setLang(JLang.defaultLang_code);
     }
 
     public static String get(String jLangName) {
-        var currentLanguage = Languages.getLanguage();
+        var currentLanguage = JLang.languages.getLanguage();
+        for (JLangString jLangString : currentLanguage.getjLangStrings()) {
+            if (jLangString.getStringName().equals(jLangName)) {
+                return jLangString.getStringValue();
+            }
+        }
+        return getDefault(jLangName);
+    }
+
+    public static String getLang() {
+        return JLang.languages.getLanguage().getLangCode();
+    }
+
+    private static String getDefault(String jLangName) {
+        var currentLanguage = JLang.languages.getLanguage(JLang.defaultLang_code);
         for (JLangString jLangString : currentLanguage.getjLangStrings()) {
             if (jLangString.getStringName().equals(jLangName)) {
                 return jLangString.getStringValue();
