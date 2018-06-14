@@ -1,7 +1,9 @@
 package jlang;
 
 import jlang.detect.DetectLangCode;
+import jlang.parser.GetFiles;
 import jlang.parser.LangParserAll;
+import jlang.util.AppendURI;
 import jlang.util.exception.DefaultLangMissingException;
 import jlang.util.exception.LanguageMissingException;
 
@@ -30,13 +32,18 @@ public class Init {
     }
 
     public void start(Class jarClass, String jarPath, Languages languages, String lang_code) throws URISyntaxException, IOException {
+        System.out.println(jarClass.getCanonicalName());
         var uri = jarClass.getResource(jarPath).toURI();
         var filesystem = initFileSystem(uri);
-        start(uri, languages, lang_code);
+        var langPath = Paths.get(uri);
+        var tempPath = Files.createTempDirectory(jarPath);
+        copyDir(langPath, tempPath);
         filesystem.close();
+        start(tempPath.toUri(), languages, lang_code);
+        deleteDir(tempPath);
     }
 
-    private static FileSystem initFileSystem(URI uri) throws IOException {
+    private FileSystem initFileSystem(URI uri) throws IOException {
         try {
             return FileSystems.getFileSystem(uri);
         } catch(FileSystemNotFoundException e) {
@@ -44,6 +51,22 @@ public class Init {
             env.put("create", "true");
             return FileSystems.newFileSystem(uri, env);
         }
+    }
+
+    private void copyDir(Path srcDir, Path destDir) throws IOException {
+        var srcPaths = new GetFiles(srcDir).getFiles();
+        for (Path path : srcPaths) {
+            var destPath = new AppendURI(destDir, path.getFileName().toString()).getPath();
+            Files.copy(path, destPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    private void deleteDir(Path dirPath) throws IOException {
+        var dirPaths = new GetFiles(dirPath).getFiles();
+        for (Path path : dirPaths) {
+            Files.delete(path);
+        }
+        Files.delete(dirPath);
     }
 
     private void checkDefaultLang(Languages languages, String lang_code)  {

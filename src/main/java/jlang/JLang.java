@@ -31,17 +31,31 @@ public class JLang {
         start(langsPath, "en");
     }
 
+    public static void start(String jarPath, String defaultLang_code, Class callerClass) {
+        try {
+            JLang.defaultLang_code = defaultLang_code;
+            JLang.init.start(callerClass, jarPath, JLang.languages, defaultLang_code);
+        } catch (Exception e) {
+            throw new InitException(e);
+        }
+    }
+    
     public static void start(String jarPath, String defaultLang_code) {
         try {
-            JLang.defaultLang_code = defaultLang_code;var callerClass = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName());
-            JLang.init.start(callerClass, jarPath, JLang.languages, defaultLang_code);
-        } catch (ClassNotFoundException | IOException | URISyntaxException e) {
-            throw new InitException();
+            var callerClass = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName());
+            start(jarPath, defaultLang_code, callerClass);
+        } catch (Exception e) {
+            throw new InitException(e);
         }
     }
 
     public static void start(String jarPath) {
-        start(jarPath, "en");
+        try {
+            var callerClass = Class.forName(Thread.currentThread().getStackTrace()[2].getClassName());
+            start(jarPath, "en", callerClass);
+        } catch (Exception e) {
+            throw new InitException(e);
+        }
     }
 
     public static void setLang(String lang_code) {

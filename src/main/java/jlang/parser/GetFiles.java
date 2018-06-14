@@ -7,14 +7,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-class GetFiles {
+public class GetFiles {
     private Path langsPath;
 
-    GetFiles(Path langsPath) {
+    public GetFiles(Path langsPath) {
         this.langsPath = langsPath;
     }
 
-    List<Path> getFiles() {
+    public List<Path> getFiles() {
         var files = new ArrayList<Path>();
 
         DirectoryStream<Path> directoryStream;
