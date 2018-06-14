@@ -11,6 +11,9 @@ plugins {
     id 'java-library'
 }
 
+apply plugin: 'maven'
+group 'com.github.ErnyTech'
+
 sourceCompatibility = 10
 targetCompatibility = 10
 
