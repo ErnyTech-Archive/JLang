@@ -217,6 +217,14 @@ JLang.start(Paths.get("/home/jlang/lang"));
 JLang.get("app") //JLang return value of app string of language detected automatically
 ```
 
+**Initialization of JLang with custom default lang and obtaining a string from the language detected automatically**
+``` Java
+// /home/jlang/lang is a directory where there are the language files
+// it is a custom default language
+JLang.start(Paths.get("/home/jlang/lang"), "it");
+JLang.get("app") //JLang return value of app string of language detected automatically
+```
+
 **Initialization of JLang and obtaining a string from the language set manually**
 ``` Java
 // /home/jlang/lang is a directory where there are the language files
