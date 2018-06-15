@@ -32,7 +32,6 @@ public class Init {
     }
 
     public void start(Class jarClass, String jarPath, Languages languages, String lang_code) throws URISyntaxException, IOException {
-        System.out.println(jarClass.getCanonicalName());
         var uri = jarClass.getResource(jarPath).toURI();
         var filesystem = initFileSystem(uri);
         var langPath = Paths.get(uri);
